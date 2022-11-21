@@ -14,6 +14,19 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
+resource "aws_ebs_volume" "ebsvolumedemo" {
+  availability_zone = "${var.region}a"
+  size              = 40
+}
+
+resource "aws_s3_bucket" "customerdata" {
+  bucket = "customer-data-demo"
+  
+  tags = merge(var.default_tags, {
+    name = "customer_data_${var.environment}"
+  })
+}
+
 resource "aws_iam_account_password_policy" "strict" {
   #minimum_password_length        = 8
   #require_lowercase_characters   = true
